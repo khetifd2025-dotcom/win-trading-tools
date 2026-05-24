@@ -8,6 +8,8 @@ WIN Trading Tools provides free calculators, checklists, trading education, digi
 
 It also includes an AI Trading Assistant page. By default it runs in local free mode without using API credit; OpenAI mode can be enabled later with server-side environment variables.
 
+Free mode uses a bundled WIN Trade AI knowledge base extracted from the local `ok leo` trading project. The production app does not read `C:\Users\ThinkPad\trade-ai\ok leo` directly because Vercel cannot access local Windows paths.
+
 The site is educational only. It does not provide financial advice, guarantee profits, promise income, or claim a fixed winrate.
 
 ## Monetization model
@@ -117,7 +119,7 @@ By default, `/api/ai` uses local free mode and does not call OpenAI or use API c
 To use free mode:
 
 1. Set `AI_MODE=free` or leave `AI_MODE` blank.
-2. Use `/ai` for educational rule-based trading assistance.
+2. Use `/ai` for educational rule-based trading assistance powered by the bundled knowledge in `lib/trading-knowledge.ts`.
 
 To enable OpenAI mode later:
 
