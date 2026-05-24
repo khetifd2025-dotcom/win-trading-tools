@@ -6,6 +6,7 @@ import { tools } from "@/lib/tools";
 const staticRoutes = [
   "",
   "/ai",
+  "/ai/knowledge",
   "/tools",
   "/blog",
   "/products",

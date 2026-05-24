@@ -1,3 +1,5 @@
+import { okLeoKnowledgeDocs } from "@/lib/ok-leo-knowledge";
+
 export type TradingKnowledgeDoc = {
   id: string;
   title: string;
@@ -244,7 +246,8 @@ export const tradingKnowledgeDocs: TradingKnowledgeDoc[] = [
       "entry, stop, target ต้องคำนวณจาก risk ไม่ใช่อารมณ์",
       "โมเดลช่วยวางแผน ไม่ได้การันตีทิศทางตลาด"
     ]
-  }
+  },
+  ...okLeoKnowledgeDocs
 ];
 
 function normalize(value: string) {

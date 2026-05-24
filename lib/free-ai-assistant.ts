@@ -12,6 +12,7 @@ type IntentId =
   | "session_timing"
   | "news_risk"
   | "journal_review"
+  | "advanced_model_review"
   | "general_planning";
 
 type IntentProfile = {
@@ -432,6 +433,59 @@ function getIntentProfile(id: IntentId, confidence: Confidence): IntentProfile {
       ],
       tools: ["Trade Journal Profit Calculator", "Daily Loss Limit Calculator", "Risk Reward Calculator"]
     },
+    advanced_model_review: {
+      ...shared,
+      id,
+      label: "advanced OK Leo model review",
+      labelTh: "รีวิวโมเดลวิเคราะห์ขั้นสูงจาก OK Leo",
+      quickTake:
+        "Advanced models such as harmonic PRZ, Elliott wave, path projection, and EA safety rules should be used as confluence, not as guaranteed entry signals.",
+      quickTakeTh:
+        "โมเดลขั้นสูงอย่าง harmonic PRZ, Elliott wave, path projection และกฎ EA safety ควรใช้เป็น confluence ไม่ใช่สัญญาณเข้าเทรดที่การันตีผล",
+      reasoning: [
+        "Pattern, wave, and projection models are maps that need structure, liquidity, session, and risk validation.",
+        "A completed pattern or wave count is weaker without invalidation and RR.",
+        "When model evidence conflicts, waiting is a valid decision."
+      ],
+      reasoningTh: [
+        "pattern, wave และ projection เป็นแผนที่ ต้องยืนยันด้วย structure, liquidity, session และ risk",
+        "pattern complete หรือ wave count ยังอ่อนถ้าไม่มี invalidation และ RR",
+        "เมื่อหลักฐานของโมเดลขัดกัน การรอคือการตัดสินใจที่ถูกต้องได้"
+      ],
+      missingInfo: [
+        "model type",
+        "symbol",
+        "timeframe stack",
+        "current price",
+        "key liquidity",
+        "invalidation",
+        "RR"
+      ],
+      missingInfoTh: [
+        "ประเภทโมเดล",
+        "symbol",
+        "timeframe stack",
+        "ราคาปัจจุบัน",
+        "key liquidity",
+        "invalidation",
+        "RR"
+      ],
+      checklist: [
+        "Confirm what the model is measuring.",
+        "Check whether the model aligns with market structure.",
+        "Validate liquidity target and invalidation.",
+        "Reject the idea if RR or spread is poor.",
+        "Keep the final decision educational and risk-based."
+      ],
+      checklistTh: [
+        "ยืนยันก่อนว่าโมเดลกำลังวัดอะไร",
+        "เช็กว่าโมเดลสอดคล้องกับ market structure ไหม",
+        "ตรวจ liquidity target และ invalidation",
+        "ตัดไอเดียถ้า RR หรือ spread แย่",
+        "ตัดสินใจจาก risk plan ไม่ใช่ความสวยของโมเดล"
+      ],
+      tools: ["Risk Reward Calculator", "Lot Size Calculator", "News Risk Checklist"]
+    },
     general_planning: {
       ...shared,
       id,
@@ -504,6 +558,29 @@ function detectIntent(message: string, hasImage: boolean): IntentProfile {
     {
       id: "journal_review",
       value: score(normalized, ["journal", "winrate", "expectancy", "profit factor", "บันทึก", "จิตวิทยา"])
+    },
+    {
+      id: "advanced_model_review",
+      value: score(normalized, [
+        "harmonic",
+        "prz",
+        "gartley",
+        "bat",
+        "butterfly",
+        "crab",
+        "cypher",
+        "elliott",
+        "wave",
+        "path projection",
+        "projection",
+        "ea",
+        "expert advisor",
+        "multi agent",
+        "fibonacci",
+        "ฮาร์โมนิก",
+        "คลื่น",
+        "อีเอ"
+      ])
     },
     {
       id: "market_direction",

@@ -36,6 +36,12 @@ export default function AiPage() {
             >
               Download checklist
             </Link>
+            <Link
+              href="/ai/knowledge"
+              className="rounded-md border border-zinc-700 px-4 py-2 text-sm font-semibold text-zinc-100 hover:bg-zinc-900"
+            >
+              View knowledge base
+            </Link>
           </div>
 
           <div className="mt-8">
@@ -63,6 +69,10 @@ export default function AiPage() {
           {
             title: "Educational review",
             body: "Use the assistant to explain SMC terms, session behavior, breakout confirmation, or common trading mistakes."
+          },
+          {
+            title: "OK Leo knowledge",
+            body: "Free mode now uses curated modules from the OK Leo trading project, including liquidity, BOS/CHoCH, session workflows, news risk, harmonic PRZ, and Elliott wave context."
           }
         ].map((item) => (
           <article key={item.title} className="card rounded-lg p-5">

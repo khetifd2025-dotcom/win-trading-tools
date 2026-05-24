@@ -121,6 +121,7 @@ To use free mode:
 1. Set `AI_MODE=free` or leave `AI_MODE` blank.
 2. Use `/ai` for educational AI-style trading assistance powered by the bundled knowledge in `lib/trading-knowledge.ts`.
 3. Free mode analyzes the user's wording, detects intent such as XAUUSD direction questions, fake breakout checks, SMC review, risk sizing, session timing, news risk, or journal review, then returns a structured planning checklist.
+4. Review the bundled OK Leo modules at `/ai/knowledge`.
 
 To enable OpenAI mode later:
 
