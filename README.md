@@ -6,7 +6,7 @@ Production-ready starter platform for a monetization-focused forex, gold, and ri
 
 WIN Trading Tools provides free calculators, checklists, trading education, digital product cards, affiliate resource pages, ad placeholders, lead capture, and an admin dashboard scaffold.
 
-It also includes an optional AI Trading Assistant page for educational text and image analysis when `OPENAI_API_KEY` is configured server-side.
+It also includes an AI Trading Assistant page. By default it runs in local free mode without using API credit; OpenAI mode can be enabled later with server-side environment variables.
 
 The site is educational only. It does not provide financial advice, guarantee profits, promise income, or claim a fixed winrate.
 
@@ -77,6 +77,7 @@ RESEND_API_KEY=
 
 OPENAI_API_KEY=
 OPENAI_MODEL=
+AI_MODE=free
 
 NEXT_PUBLIC_GA_ID=
 ```
@@ -111,11 +112,21 @@ Lead capture still works without Resend.
 
 ## AI assistant setup
 
-1. Add `OPENAI_API_KEY` to your server environment.
-2. Optionally set `OPENAI_MODEL`; if blank, the app uses `gpt-4.1-mini`.
-3. Use `/ai` for educational text and image analysis.
+By default, `/api/ai` uses local free mode and does not call OpenAI or use API credit.
 
-The assistant does not provide financial advice, trade signals, guaranteed outcomes, or fixed winrate claims. If `OPENAI_API_KEY` is missing, `/api/ai` returns a safe setup message instead of crashing.
+To use free mode:
+
+1. Set `AI_MODE=free` or leave `AI_MODE` blank.
+2. Use `/ai` for educational rule-based trading assistance.
+
+To enable OpenAI mode later:
+
+1. Set `AI_MODE=openai`.
+2. Add `OPENAI_API_KEY` to your server environment.
+3. Optionally set `OPENAI_MODEL`; if blank, the app uses `gpt-4.1-mini`.
+4. Redeploy after changing environment variables.
+
+The assistant does not provide financial advice, trade signals, guaranteed outcomes, or fixed winrate claims. If OpenAI mode is unavailable, `/api/ai` falls back to free mode instead of crashing.
 
 ## Deploy to Vercel
 
