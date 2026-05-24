@@ -22,6 +22,15 @@ type OpenAiResponse = {
   }>;
 };
 
+type OpenAiErrorResponse = {
+  error?: {
+    message?: string;
+    type?: string;
+    code?: string;
+    param?: string;
+  };
+};
+
 function isValidImageDataUrl(value: string) {
   return /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(value);
 }
@@ -50,6 +59,60 @@ function fallbackAnswer(hasImage: boolean) {
       : "You can still use the free calculators and checklists while AI is offline.",
     "Trading involves risk. AI responses are educational only and are not financial advice."
   ].join(" ");
+}
+
+async function readOpenAiError(response: Response) {
+  try {
+    const payload = (await response.json()) as OpenAiErrorResponse;
+    return payload.error;
+  } catch {
+    return undefined;
+  }
+}
+
+function mapOpenAiError(status: number, error?: OpenAiErrorResponse["error"]) {
+  const code = error?.code || error?.type || "unknown_error";
+
+  if (status === 400) {
+    return {
+      clientStatus: 502,
+      message:
+        "AI request was rejected by OpenAI. Check OPENAI_MODEL and try a shorter prompt or smaller image.",
+      code
+    };
+  }
+
+  if (status === 401) {
+    return {
+      clientStatus: 500,
+      message: "AI authentication failed. Check OPENAI_API_KEY on the server.",
+      code
+    };
+  }
+
+  if (status === 403) {
+    return {
+      clientStatus: 500,
+      message:
+        "AI key does not have access to this model or project. Check OpenAI project permissions and model access.",
+      code
+    };
+  }
+
+  if (status === 429) {
+    return {
+      clientStatus: 502,
+      message:
+        "OpenAI rate limit or quota was reached. Check billing, credits, and usage limits in your OpenAI account.",
+      code
+    };
+  }
+
+  return {
+    clientStatus: 502,
+    message: "AI service is unavailable right now. Try again later.",
+    code
+  };
 }
 
 export async function POST(request: Request) {
@@ -138,13 +201,24 @@ export async function POST(request: Request) {
     });
 
     if (!aiResponse.ok) {
-      const status = aiResponse.status;
-      const error =
-        status === 401
-          ? "AI authentication failed. Check OPENAI_API_KEY on the server."
-          : "AI service is unavailable right now. Try again later.";
+      const openAiError = await readOpenAiError(aiResponse);
+      const mappedError = mapOpenAiError(aiResponse.status, openAiError);
 
-      return NextResponse.json({ ok: false, error }, { status: status === 401 ? 500 : 502 });
+      console.error("OpenAI API error:", {
+        status: aiResponse.status,
+        code: mappedError.code,
+        message: openAiError?.message
+      });
+
+      return NextResponse.json(
+        {
+          ok: false,
+          error: mappedError.message,
+          providerStatus: aiResponse.status,
+          providerCode: mappedError.code
+        },
+        { status: mappedError.clientStatus }
+      );
     }
 
     const payload = (await aiResponse.json()) as OpenAiResponse;
