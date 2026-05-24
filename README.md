@@ -30,7 +30,7 @@ The site is educational only. It does not provide financial advice, guarantee pr
 - Supabase database/auth structure
 - Stripe Checkout route
 - Resend email integration structure
-- OpenAI-powered AI chat route for text and image prompts
+- Free-mode AI-style trading assistant with optional OpenAI upgrade
 - Vercel-ready deployment
 
 ## Install
@@ -119,7 +119,8 @@ By default, `/api/ai` uses local free mode and does not call OpenAI or use API c
 To use free mode:
 
 1. Set `AI_MODE=free` or leave `AI_MODE` blank.
-2. Use `/ai` for educational rule-based trading assistance powered by the bundled knowledge in `lib/trading-knowledge.ts`.
+2. Use `/ai` for educational AI-style trading assistance powered by the bundled knowledge in `lib/trading-knowledge.ts`.
+3. Free mode analyzes the user's wording, detects intent such as XAUUSD direction questions, fake breakout checks, SMC review, risk sizing, session timing, news risk, or journal review, then returns a structured planning checklist.
 
 To enable OpenAI mode later:
 

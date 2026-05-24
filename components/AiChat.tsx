@@ -23,7 +23,7 @@ export default function AiChat() {
     {
       role: "assistant",
       content:
-        "Send a trading question or upload a chart screenshot. I can explain visible structure, risk planning ideas, checklist items, and educational next steps. Trading involves risk and this is not financial advice."
+        "Send a trading question or upload a chart screenshot. Free mode can analyze your wording, match it to WIN trading checklists, and suggest educational next steps without using API credit. Trading involves risk and this is not financial advice."
     }
   ]);
   const [message, setMessage] = useState("");
@@ -141,7 +141,7 @@ export default function AiChat() {
           </p>
         </div>
         <span className="rounded-md border border-gold-400/30 bg-gold-400/10 px-2 py-1 text-xs font-medium text-gold-100">
-          Text + image
+          Free mode
         </span>
       </div>
 
